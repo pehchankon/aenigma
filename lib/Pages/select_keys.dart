@@ -52,7 +52,7 @@ class _SelectKeysState extends State<SelectKeys> {
                     RoundedButton(
                       text: 'Add Key',
                       press: () {
-                          setState(() => keys.add(keyName!, keyValue!)); print('helo');},
+                          setState(() => keys.add(keyName!, keyValue!)); keys.incrementCounter();},
                     ),
                     SizedBox(height: 10),
                   ],
