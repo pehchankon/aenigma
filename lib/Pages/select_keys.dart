@@ -4,6 +4,7 @@ import '../Model/key_tile.dart';
 import '../Components/input_field.dart';
 import '../Components/rounded_button.dart';
 
+
 class SelectKeys extends StatefulWidget {
   const SelectKeys({
     Key? key,
@@ -27,6 +28,23 @@ class _SelectKeysState extends State<SelectKeys> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Encrypt0')),
+      drawer: Drawer(child: ListView(padding: EdgeInsets.zero,
+    children: [
+      const DrawerHeader(decoration: BoxDecoration(
+        color: Colors.blue,
+      ),
+      child: Text("Menu"),
+      ),
+      ListTile(
+              title: const Text('File encryption'),
+              onTap: () {
+
+                Navigator.pop(context);
+              },
+            ),
+        ],
+      ),
+    ),
       body: ListView(
         children: keysList!,
       ),
@@ -55,7 +73,7 @@ class _SelectKeysState extends State<SelectKeys> {
                       text: 'Add Key',
                       press: () {
                         keys.add(keyName!, keyValue!);
-                        setState((){});
+                        setState(() {});
                         // keys.incrementCounter();
                       },
                     ),
