@@ -14,15 +14,25 @@ class SelectKeys extends StatefulWidget {
 }
 
 class _SelectKeysState extends State<SelectKeys> {
-  Keys keys = Keys();
+  Keys? keys;
   List<Widget>? keysList;
+  @override
+  void initState() {
+    super.initState();
+    keys = Keys();
+    _ini();
+  }
 
+  void _ini() async{await keys?.getKeys(); setState(() {});}
+  
   @override
   Widget build(BuildContext context) {
     keysList = [];
 
-    keys.get().forEach(
-        (key, value) => keysList?.add(KeyTile(listElement: Pair(key, value))));
+    keys?.get().forEach((key, value) => keysList?.add(KeyTile(
+          listElement: Pair(key, value),
+          keysList: keys,
+        )));
     String? keyName, keyValue;
 
     return Scaffold(
@@ -54,8 +64,8 @@ class _SelectKeysState extends State<SelectKeys> {
                     RoundedButton(
                       text: 'Add Key',
                       press: () {
-                        keys.add(keyName!, keyValue!);
-                        setState((){});
+                        keys?.add(keyName!, keyValue!);
+                        setState(() {});
                         // keys.incrementCounter();
                       },
                     ),
