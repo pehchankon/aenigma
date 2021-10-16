@@ -3,12 +3,10 @@
 <android.inputmethodservice.KeyboardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/keyboard"
-    android:layout_alignParentBottom="true"
-    android:keyTextColor="#e5e5e5"
-    android:keyPreviewLayout="@layout/key_preview"
-    android:background="#131313"
 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:keyBackground="@drawable/key_background"
+    android:keyPreviewLayout="@layout/keyboard_preview"
+    android:background="@color/overall_background_color"
+    
+    >
 </android.inputmethodservice.KeyboardView>
