@@ -4,7 +4,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.15.0-178.0.dev <3.0.0"
+  sdk: ">=2.14.0-178.0.dev <3.0.0"
 
 
 dependencies:
@@ -12,6 +12,12 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.0.8
+  file_picker: ^3.0.3
+  permission_handler: ^8.1.2
+  # aes_crypt: ^0.1.1
+  path_provider: ^2.0.5
+  ext_storage: ^1.0.3
+  aes_crypt_null_safe: ^2.0.1
 
 dev_dependencies:
   flutter_test:
