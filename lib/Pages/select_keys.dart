@@ -19,7 +19,10 @@ class _SelectKeysState extends State<SelectKeys> {
 
   @override
   Widget build(BuildContext context) {
-    keysList = keys.get().map((key) => KeyTile(listElement: key)).toList();
+    keysList = [];
+
+    keys.get().forEach(
+        (key, value) => keysList?.add(KeyTile(listElement: Pair(key, value))));
     String? keyName, keyValue;
 
     return Scaffold(
@@ -32,7 +35,6 @@ class _SelectKeysState extends State<SelectKeys> {
             isScrollControlled: true,
             context: context,
             builder: (context) {
-              
               return Container(
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -52,7 +54,10 @@ class _SelectKeysState extends State<SelectKeys> {
                     RoundedButton(
                       text: 'Add Key',
                       press: () {
-                          setState(() => keys.add(keyName!, keyValue!)); keys.incrementCounter();},
+                        keys.add(keyName!, keyValue!);
+                        setState((){});
+                        // keys.incrementCounter();
+                      },
                     ),
                     SizedBox(height: 10),
                   ],

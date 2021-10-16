@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:collection';
 import 'dart:convert';
 
 class Pair<T1, T2> {
@@ -9,41 +10,49 @@ class Pair<T1, T2> {
 }
 
 class Keys {
+  SharedPreferences? prefs;
 
-  SharedPreferences? prefs;  
+  List<Pair<String, String>> _list = [Pair('KeyName', 'SecretValue')];
+  LinkedHashMap<String,dynamic> _hash = LinkedHashMap.of({"ttffmp":"SecretValue"});
 
-  List<Pair<String, String>> _list = [Pair('key', 'value')];
-
-
-  Keys()
-  {
+  Keys() {
+    print(_hash);
     _getKeys();
   }
 
-  void add(String key, String value) async{
-    _list.add(Pair(key, value));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('keys',json.encode(_list));
+  void add(String key, String value) async {
+    // _list.add(Pair(key, value));
+    _hash.addAll({key:value});
+    prefs = await SharedPreferences.getInstance();
+    prefs?.setString('keys_test6', json.encode(_hash));
   }
 
-  List get() {
-    return _list;
+  LinkedHashMap get() {
+    // return _list;
+    return _hash;
   }
 
   _getKeys() async {
     prefs = await SharedPreferences.getInstance();
-     = (prefs.getString('keys') ?? 'null');
+    String temp = (prefs?.getString('keys_test6') ?? 'null');
+    if (temp != 'null') {
+      _hash = json.decode(temp);
+    }
+    else {
+      await prefs?.setString('keys_test6', json.encode(_hash));
+    }
   }
 
-  setActiveKey(String key) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('activeKey', key);
+  setActiveKey(String key) async {
+    prefs = await SharedPreferences.getInstance();
+    await prefs?.setString('activeKey', key);
   }
+
   incrementCounter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String counter = (prefs.getString('activeKey') ?? 'null');
+    prefs = await SharedPreferences.getInstance();
+    String counter = (prefs?.getString('activeKey') ?? 'null');
     print(counter);
-    counter='ha';
-    await prefs.setString('activeKey', counter);
+    counter = 'ha';
+    await prefs?.setString('activeKey', counter);
   }
 }
