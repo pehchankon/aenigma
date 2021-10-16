@@ -172,7 +172,7 @@ class _NinjaCardState extends State<NinjaCard> {
                               crypt.setPassword(myController.text);
                               crypt.setOverwriteMode(AesCryptOwMode.on);
                               crypt.encryptFileSync(
-                                  _fileInfo!.path, '${d.path}/$_fileName.aes');
+                                  (_fileInfo?.path)!, '${d.path}/$_fileName.aes');
                               print("file encrypted successfully");
                             } else {
                               print("file encryption unsuccessful");
