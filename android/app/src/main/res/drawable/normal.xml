@@ -5,6 +5,13 @@
             <solid android:color="@color/keyboard_divider"/>
         </shape>
     </item> -->
+    <item android:bottom="5dp" android:left="3dp" android:right="3dp" android:top="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#2a313b"/>
+            <corners android:radius="4dp" />
+        </shape>
+        
+    </item>
     <item android:bottom="3dp" android:left="3dp" android:right="3dp" android:top="5dp">
         <shape android:shape="rectangle">
             <solid android:color="#000000"/>
