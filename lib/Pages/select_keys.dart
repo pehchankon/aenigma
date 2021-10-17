@@ -65,6 +65,12 @@ class _SelectKeysState extends State<SelectKeys> {
               child: Text("Menu"),
             ),
             ListTile(
+              title: const Text('Keys selection'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               title: const Text('File encryption'),
               onTap: () {
                 Navigator.pop(context);

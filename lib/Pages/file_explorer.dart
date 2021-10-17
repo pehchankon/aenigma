@@ -3,8 +3,9 @@ import 'package:encrypto/presentation/app_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:aes_crypt_null_safe/aes_crypt_null_safe.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
+import 'select_keys.dart';
+import '../Components/rounded_button.dart';
 
 class FileExplorer extends StatefulWidget {
   @override
@@ -58,22 +59,20 @@ class _FileExplorerState extends State<FileExplorer> {
     // }
 
     final folderName = "Encrypto";
-    final path = Directory("/storage/emulated/0/"+folderName);
-    if ((await path.exists())) {}
-    else
-    {
+    final path = Directory("/storage/emulated/0/" + folderName);
+    if ((await path.exists())) {
+    } else {
       print('doesnt exist');
-      
     }
-    await Directory(path.path+'/Encrypted').create(recursive: true);
-      await Directory(path.path+'/Decrypted').create(recursive: true);
+    await Directory(path.path + '/Encrypted').create(recursive: true);
+    await Directory(path.path + '/Decrypted').create(recursive: true);
     return path;
   }
 
-
   requestStoragePermission() async {
     if (!await Permission.manageExternalStorage.isGranted) {
-      PermissionStatus result = await Permission.manageExternalStorage.request();
+      PermissionStatus result =
+          await Permission.manageExternalStorage.request();
       if (result.isGranted) {
         setState(() {
           _isGranted = true;
@@ -91,16 +90,41 @@ class _FileExplorerState extends State<FileExplorer> {
     requestStoragePermission();
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 242, 234, 223),
+      // backgroundColor: Color.fromARGB(255, 242, 234, 223),
       appBar: AppBar(
-        title: Text(
-          'AES Encryption and Decryption',
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
+        title: Text('Encrypt0'),
         // backgroundColor: Colors.grey[850],
-        backgroundColor: Color.fromARGB(255, 199, 191, 179),
-        elevation: 0.0,
+        // backgroundColor: Color.fromARGB(255, 199, 191, 179),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            ListTile(
+              title: const Text('Keys selection'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SelectKeys()));
+              },
+            ),
+            ListTile(
+                title: const Text('File encryption'),
+                onTap: () {
+                  Navigator.pop(context);
+                }),
+          ],
+        ),
       ),
       body: Center(
         child: Container(
@@ -177,7 +201,8 @@ class _FileExplorerState extends State<FileExplorer> {
                             var crypt = AesCrypt();
                             crypt.setPassword(myController.text);
                             crypt.setOverwriteMode(AesCryptOwMode.on);
-                            crypt.encryptFileSync(_fileInfo?.path??'null', '${d.path}/Encrypted/$_fileName.aes');
+                            crypt.encryptFileSync(_fileInfo?.path ?? 'null',
+                                '${d.path}/Encrypted/$_fileName.aes');
                             print("file encrypted successfully");
                           } else {
                             print("file encryption unsuccessful");
@@ -211,8 +236,9 @@ class _FileExplorerState extends State<FileExplorer> {
                           var crypt = AesCrypt();
                           crypt.setPassword(myController.text);
                           crypt.setOverwriteMode(AesCryptOwMode.on);
-                          crypt.decryptFileSync(_fileInfo?.path??'null','${d.path}/Decrypted/');
-                          // crypt.decryptFileSync('${d.path}/Encrypted/$_fileName');
+                          // crypt.decryptFileSync(_fileInfo?.path ?? 'null',
+                              // '${d.path}/Decrypted/');
+                          crypt.decryptFileSync('${d.path}/Encrypted/$_fileName','${d.path}/Decrypted/${_fileName.substring(0,_fileName.length-4)}');
                           print("file decrypted successfully");
                         }
                       }),
@@ -227,9 +253,8 @@ class _FileExplorerState extends State<FileExplorer> {
       floatingActionButton: FloatingActionButton.extended(
         // Moved FloatingActionButton to bottom right
         onPressed: () => _openFileExplorer(),
-        label: const Text('Add File'), // Added Custom Text
-        icon: const Icon(MyFlutterApp.fileexplorericon), // Added Custom Icon
-        backgroundColor: Colors.pink,
+        label: const Text('Select File'), // Added Custom Text
+        icon: const Icon(Icons.add), // Added Custom Icon
       ),
     );
   }

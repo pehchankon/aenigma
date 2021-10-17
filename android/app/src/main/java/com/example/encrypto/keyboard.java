@@ -22,9 +22,10 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.*;
-
+import android.content.SharedPreferences;
+import android.content.Context;
 import androidx.annotation.RequiresApi;
-
+import android.preference.PreferenceManager;
 public class keyboard extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
 
     enum Mode
@@ -35,10 +36,15 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
     private KeyboardView keyboardView;
     private Keyboard keyboard;
 
+    // SharedPreferences prefs;
+    // String password = prefs.getString("flutter.activeKey", "");
+    String password="";
+
     private boolean caps = false;
 
     @Override
     public View onCreateInputView() {
+        // prefs=getSharedPreferences("FlutterSharedPreferences", 0);
         keyboardView = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard_view, null);
         keyboard = new Keyboard(this, R.xml.keys_layout);
         keyboardView.setKeyboard(keyboard);
@@ -78,7 +84,7 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
                     CharSequence currentText = inputConnection.getExtractedText(new ExtractedTextRequest(), 0).text;
                     if(!TextUtils.isEmpty(inputConnection.getSelectedText(0))) inputConnection.commitText("", 1);
                     inputConnection.deleteSurroundingText(Integer.MAX_VALUE, Integer.MAX_VALUE);
-                    try {String encryptedText = cryptoController.encrypt(currentText.toString());
+                    try {String encryptedText = cryptoController.encrypt(currentText.toString(),password);
                     inputConnection.commitText(encryptedText, 1);
                     inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                     inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER));
@@ -93,7 +99,7 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
                     String encryptedText = item.getText().toString();
 
                     try {
-                    String decryptedString = cryptoController.decrypt(encryptedText);
+                    String decryptedString = cryptoController.decrypt(encryptedText,password);
                     inputConnection.deleteSurroundingText(Integer.MAX_VALUE, Integer.MAX_VALUE);
                     inputConnection.commitText(decryptedString, 1);
                     } catch (Exception e) {}
