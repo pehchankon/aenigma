@@ -1,11 +1,9 @@
-# ENCRYPT0
+# CRYPTOBOARD
 
 
 ## ABOUT 
 ```
-Encrypto is an cryptographic app that provides services like file encryption & 
-a keyboard which encrypts the messages sent using AES-256 bit key length to 
-encrypt and decrypt a block of messages.
+Cryptoboard is a system wide keyboard that encrypts all forms of messages using a user defined secret key. Apart from plain text, various types of files can also be encrypted/decrypted using the app. This primarily uses AES-256 encryption.
 ```
 
 ## TECHNOLOGIES USED
@@ -19,8 +17,8 @@ encrypt and decrypt a block of messages.
 ## HOW TO INSTALL
 ```
 1. Navigate to the apk-release folder in the main directory
-2. Download and Install apk
+2. Download and install the APK
 3. Enable keyboard under setting -> Languages & Input
-4. Allow file permissions for storage access.
+4. Allow file permissions for storage access when prompted within the app
 ```
 ### Made with <3 Team Quintessential
