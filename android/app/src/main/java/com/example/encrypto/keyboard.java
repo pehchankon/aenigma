@@ -32,19 +32,21 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
     {
         TEXT, NUMERIC, SYMBOL;
     }
+
+    private Mode state=Mode.TEXT;
     private Cryptography cryptoController = new Cryptography();
     private KeyboardView keyboardView;
     private Keyboard keyboard;
 
-    // SharedPreferences prefs;
-    // String password = prefs.getString("flutter.activeKey", "");
+    SharedPreferences prefs;
     String password="";
 
     private boolean caps = false;
 
     @Override
     public View onCreateInputView() {
-        // prefs=getSharedPreferences("FlutterSharedPreferences", 0);
+        prefs=MainActivity.getAppContext().getSharedPreferences("FlutterSharedPreferences", 0);
+        password=prefs.getString("flutter.activeKey", "");
         keyboardView = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard_view, null);
         keyboard = new Keyboard(this, R.xml.keys_layout);
         keyboardView.setKeyboard(keyboard);
@@ -105,6 +107,34 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
                     } catch (Exception e) {}
                     break;
 
+                case -7:            //change to number
+                    keyboard = new Keyboard(this, R.xml.keys_layout2);
+                    state=Mode.NUMERIC;
+                    keyboard.setShifted(caps);
+                    keyboardView.setKeyboard(keyboard);
+                    //keyboardView.setOnKeyboardActionListener(this);
+                    keyboardView.invalidateAllKeys();
+
+                    break;
+                
+                case -8:            //change to alpha
+                    keyboard = new Keyboard(this, R.xml.keys_layout3);
+                    state=Mode.SYMBOL;
+                    keyboard.setShifted(caps);
+                    keyboardView.setKeyboard(keyboard);
+                    //keyboardView.setOnKeyboardActionListener(this);
+                    keyboardView.invalidateAllKeys();
+
+                    break;
+                case -9:            //change to alpha
+                    keyboard = new Keyboard(this, R.xml.keys_layout);
+                    state=Mode.TEXT;
+                    keyboard.setShifted(caps);
+                    keyboardView.setKeyboard(keyboard);
+                    //keyboardView.setOnKeyboardActionListener(this);
+                    keyboardView.invalidateAllKeys();
+
+                    break;
                 default :
                     char code = (char) primaryCode;
                     if(Character.isLetter(code) && caps){

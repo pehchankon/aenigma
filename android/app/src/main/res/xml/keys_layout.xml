@@ -75,16 +75,16 @@
         <Key android:keyLabel="m" android:codes="109"/>
         <!-- <Key android:keyLabel="." android:codes="46"/>
         <Key android:keyLabel="!" android:codes="33"/> -->
-        <Key android:keyLabel="cut" android:keyWidth="15%p" android:isRepeatable="true" android:keyEdgeFlags="right" android:codes="-5"/>
+        <Key android:keyLabel="DEL" android:keyWidth="15%p" android:isRepeatable="true" android:keyEdgeFlags="right" android:codes="-5"/>
 
     </Row>
 
     <Row android:rowEdgeFlags="bottom">
         <!-- <Key android:keyLabel="\@" android:keyWidth="10%p" android:keyEdgeFlags="left" android:codes="64"/>
         <Key android:keyLabel="/" android:keyWidth="10%p"  android:codes="47"/> -->
-        <Key android:keyLabel="\?123" android:codes="46" android:keyWidth="15%p" />
+        <Key android:keyLabel="\?123" android:codes="-7" android:keyWidth="15%p" />
         <Key android:keyLabel="," android:codes="44"/>
-        <Key android:keyLabel="|____|" android:keyWidth="30%p" android:isRepeatable="true" android:codes="32"/>
+        <Key android:keyLabel="____" android:keyWidth="30%p" android:isRepeatable="true" android:codes="32"/>
         <Key android:keyLabel="." android:codes="46"/>
         <!-- <Key android:keyLabel=":" android:keyWidth="10%p" android:codes="58"/>
         <Key android:keyLabel="\?" android:keyWidth="10%p" android:codes="63"/> -->
