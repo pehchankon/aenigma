@@ -3,6 +3,7 @@ import '../Database/keys.dart';
 import '../Model/key_tile.dart';
 import '../Components/input_field.dart';
 import '../Components/rounded_button.dart';
+import 'file_explorer.dart';
 
 class SelectKeys extends StatefulWidget {
   const SelectKeys({
@@ -15,6 +16,7 @@ class SelectKeys extends StatefulWidget {
 
 class _SelectKeysState extends State<SelectKeys> {
   Keys? keys;
+  String? activeKey;
   List<Widget>? keysList;
   @override
   void initState() {
@@ -23,20 +25,57 @@ class _SelectKeysState extends State<SelectKeys> {
     _ini();
   }
 
-  void _ini() async{await keys?.getKeys(); setState(() {});}
-  
+  void _ini() async {
+    await keys?.getKeys();
+    activeKey = await keys?.getActiveKey();
+    print(activeKey);
+    setState(() {});
+  }
+
+  void updateActiveKey(String key) {
+    setState(() => activeKey = key);
+  }
+
   @override
   Widget build(BuildContext context) {
     keysList = [];
 
-    keys?.get().forEach((key, value) => keysList?.add(KeyTile(
-          listElement: Pair(key, value),
-          keysList: keys,
-        )));
+    keys?.get().forEach(
+          (key, value) => keysList?.add(
+            KeyTile(
+              listElement: Pair(key, value),
+              keysList: keys,
+              activeKey: activeKey,
+              callback: updateActiveKey,
+            ),
+          ),
+        );
     String? keyName, keyValue;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Encrypt0')),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text("Menu"),
+            ),
+            ListTile(
+              title: const Text('File encryption'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FileExplorer()));
+              },
+            ),
+          ],
+        ),
+      ),
       body: ListView(
         children: keysList!,
       ),
@@ -66,7 +105,8 @@ class _SelectKeysState extends State<SelectKeys> {
                       press: () {
                         keys?.add(keyName!, keyValue!);
                         setState(() {});
-                        // keys.incrementCounter();
+                        Navigator.pop(context);
+                        // keys?.clean();
                       },
                     ),
                     SizedBox(height: 10),

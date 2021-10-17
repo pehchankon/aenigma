@@ -78,7 +78,7 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
                     CharSequence currentText = inputConnection.getExtractedText(new ExtractedTextRequest(), 0).text;
                     if(!TextUtils.isEmpty(inputConnection.getSelectedText(0))) inputConnection.commitText("", 1);
                     inputConnection.deleteSurroundingText(Integer.MAX_VALUE, Integer.MAX_VALUE);
-                    try {String encryptedText = cryptoController.encrypt(currentText.toString(),"");
+                    try {String encryptedText = cryptoController.encrypt(currentText.toString());
                     inputConnection.commitText(encryptedText, 1);
                     inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                     inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER));
@@ -93,7 +93,7 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
                     String encryptedText = item.getText().toString();
 
                     try {
-                    String decryptedString = cryptoController.decrypt(encryptedText,"");
+                    String decryptedString = cryptoController.decrypt(encryptedText);
                     inputConnection.deleteSurroundingText(Integer.MAX_VALUE, Integer.MAX_VALUE);
                     inputConnection.commitText(decryptedString, 1);
                     } catch (Exception e) {}

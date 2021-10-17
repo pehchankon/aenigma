@@ -18,12 +18,21 @@ import android.os.IBinder;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
-
+import android.content.SharedPreferences;
+import android.content.Context;
 import androidx.annotation.RequiresApi;
+
+import android.app.Activity;
+
 public class Cryptography
 {
+    // SharedPreferences prefs = getApplicationContext().getSharedPreferences("FlutterSharedPreferences", 0);
+    // String password = prefs.getString("flutter.activeKey", "");
+
+    String password= "";
+
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String decrypt (String outputString, String password) throws Exception {
+    public String decrypt (String outputString) throws Exception {
         SecretKeySpec key = generateKey(password);
         Cipher c = Cipher.getInstance("AES");
         c.init(Cipher.DECRYPT_MODE, key);
@@ -37,7 +46,7 @@ public class Cryptography
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String encrypt (String Data, String password) throws Exception {
+    public String encrypt (String Data) throws Exception {
         SecretKeySpec key = generateKey(password);
         Cipher c = Cipher.getInstance("AES");
 

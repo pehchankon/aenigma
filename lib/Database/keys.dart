@@ -13,12 +13,8 @@ class Keys {
   SharedPreferences? prefs;
 
   List<Pair<String, String>> _list = [Pair('KeyName', 'SecretValue')];
-  LinkedHashMap<String,dynamic> _hash = LinkedHashMap.of({"ttffmp":"SecretValue"});
+  LinkedHashMap<String,dynamic> _hash = LinkedHashMap.of({"KeyName":"SecretValue"});
 
-  Keys() {
-    print(_hash);
-    _getKeys();
-  }
 
   void add(String key, String value) async {
     // _list.add(Pair(key, value));
@@ -32,7 +28,7 @@ class Keys {
     return _hash;
   }
 
-  _getKeys() async {
+  getKeys() async {
     prefs = await SharedPreferences.getInstance();
     String temp = (prefs?.getString('keys_test6') ?? 'null');
     if (temp != 'null') {
@@ -40,7 +36,10 @@ class Keys {
     }
     else {
       await prefs?.setString('keys_test6', json.encode(_hash));
+      await prefs?.setString('activeKey', 'SecretValue');
     }
+    print(_hash);
+
   }
 
   setActiveKey(String key) async {
@@ -48,11 +47,13 @@ class Keys {
     await prefs?.setString('activeKey', key);
   }
 
-  incrementCounter() async {
+  Future<String?> getActiveKey() async {
     prefs = await SharedPreferences.getInstance();
-    String counter = (prefs?.getString('activeKey') ?? 'null');
-    print(counter);
-    counter = 'ha';
-    await prefs?.setString('activeKey', counter);
+    return prefs?.getString('activeKey');
+  }
+  clean() async{
+    prefs = await SharedPreferences.getInstance();
+    await prefs?.clear();
+
   }
 }
