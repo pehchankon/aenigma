@@ -11,9 +11,9 @@ Cryptoboard is a system wide keyboard that encrypts all forms of messages using 
 
 
 ## Installation
-1. Navigate to the apk-release folder in the main directory
+1. Navigate to the release folder in the main directory
 2. Download and install the APK
-3. Enable keyboard under setting -> Languages & Input
+3. Enable keyboard under Settings -> Languages & Input -> On-screen keyboard -> Manage keyboards
 4. Allow file permissions for storage access when prompted within the app
 
 ## Authors
