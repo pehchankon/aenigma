@@ -26,38 +26,72 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import androidx.annotation.RequiresApi;
 import android.preference.PreferenceManager;
+
+import android.os.CountDownTimer;
+import android.view.ViewConfiguration;
+
 public class keyboard extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
 
     enum Mode
     {
         TEXT, NUMERIC, SYMBOL;
     }
-
+    private long difference;
     private Mode state=Mode.TEXT;
     private Cryptography cryptoController = new Cryptography();
     private KeyboardView keyboardView;
     private Keyboard keyboard;
-
+    CountDownTimer countDown;
     SharedPreferences prefs;
     String password="";
-
+    private boolean changeKeyboardScreen=false;
     private boolean caps = false;
 
     @Override
     public View onCreateInputView() {
+        countDown = new CountDownTimer(500, 100) {
+            public void onTick(long millisUntilFinished) {
+         }
+
+        public void onFinish() 
+        {
+            InputMethodManager imeManager = (InputMethodManager) getApplicationContext().getSystemService(INPUT_METHOD_SERVICE);
+            imeManager.showInputMethodPicker();
+            changeKeyboardScreen=true;
+        }
+        };
         prefs=this.getSharedPreferences("FlutterSharedPreferences", 0);
         password=prefs.getString("flutter.activeKey", "");
         keyboardView = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard_view, null);
         keyboard = new Keyboard(this, R.xml.keys_layout);
         keyboardView.setKeyboard(keyboard);
         keyboardView.setOnKeyboardActionListener(this);
+        keyboardView.setPreviewEnabled(false); 
         return keyboardView;
     }
 
     @Override
-    public void onPress(int i) {}
+    public void onPress(int i) 
+    {
+        countDown.cancel();
+        if(i==32)
+        {
+            countDown.start();
+        }
+
+    }
     @Override
-    public void onRelease(int i) {}
+    public void onRelease(int i) 
+    {
+        countDown.cancel();
+        if(i==32&&changeKeyboardScreen==false)
+        {
+            InputConnection inputConnection = getCurrentInputConnection();
+            inputConnection.commitText(" ", 1);
+        }
+        else
+            changeKeyboardScreen =false;
+    }
 
 
     @Override
@@ -117,7 +151,6 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
                     state=Mode.NUMERIC;
                     keyboard.setShifted(caps);
                     keyboardView.setKeyboard(keyboard);
-                    //keyboardView.setOnKeyboardActionListener(this);
                     keyboardView.invalidateAllKeys();
 
                     break;
@@ -127,20 +160,26 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
                     state=Mode.SYMBOL;
                     keyboard.setShifted(caps);
                     keyboardView.setKeyboard(keyboard);
-                    //keyboardView.setOnKeyboardActionListener(this);
                     keyboardView.invalidateAllKeys();
-
                     break;
+
                 case -9:            //change to alpha
                     keyboard = new Keyboard(this, R.xml.keys_layout);
                     state=Mode.TEXT;
                     keyboard.setShifted(caps);
                     keyboardView.setKeyboard(keyboard);
-                    //keyboardView.setOnKeyboardActionListener(this);
                     keyboardView.invalidateAllKeys();
 
                     break;
-                    
+
+                case 32:
+                    // difference=System.currentTimeMillis() - startTime;
+                    // if(difference>700)
+                    // {
+                    //     InputMethodManager imeManager = (InputMethodManager) getApplicationContext().getSystemService(INPUT_METHOD_SERVICE);
+                    //     imeManager.showInputMethodPicker();
+                    // }
+                    break;
                 default :
                     char code = (char) primaryCode;
                     if(Character.isLetter(code) && caps){
@@ -152,7 +191,6 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
         }
 
     }
-
 
     @Override
     public void onText(CharSequence charSequence) {
