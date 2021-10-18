@@ -49,10 +49,10 @@
 
     <Row android:rowEdgeFlags="bottom">
         <Key android:keyLabel="ABC" android:codes="-9" android:keyWidth="15%p"/>
-        <Key android:keyLabel="&#60;" android:codes="44"/>
+        <Key android:keyLabel="&#60;" android:codes="60"/>
         <Key android:keyLabel="&#5853;" android:codes="-6"/>
         <Key android:keyLabel="____" android:keyWidth="40%p" android:codes="32"/>
-        <Key android:keyLabel="&#62;" android:codes="46"/>
+        <Key android:keyLabel="&#62;" android:codes="62"/>
         <Key android:keyIcon="@drawable/outline_keyboard_return_24" android:keyWidth="15%p" android:keyEdgeFlags="right" android:codes="-4"/>
     </Row>
 
