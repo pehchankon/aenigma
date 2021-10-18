@@ -8,5 +8,6 @@
     android:keyPreviewLayout="@layout/keyboard_preview"
     android:background="@color/overall_background_color"
     
+    android:labelTextSize="12sp"
     >
 </android.inputmethodservice.KeyboardView>
