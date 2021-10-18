@@ -16,3 +16,6 @@ Cryptoboard is a system wide keyboard that encrypts all forms of messages using 
 3. Enable keyboard under setting -> Languages & Input
 4. Allow file permissions for storage access when prompted within the app
 
+## Authors
+- [@pehchankon](https://www.github.com/pehchankon)
+- [@DCYPHERR](https://www.github.com/DCYPHERR)
