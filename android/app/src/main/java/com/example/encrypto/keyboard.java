@@ -45,7 +45,7 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
 
     @Override
     public View onCreateInputView() {
-        prefs=MainActivity.getAppContext().getSharedPreferences("FlutterSharedPreferences", 0);
+        prefs=this.getSharedPreferences("FlutterSharedPreferences", 0);
         password=prefs.getString("flutter.activeKey", "");
         keyboardView = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard_view, null);
         keyboard = new Keyboard(this, R.xml.keys_layout);
@@ -82,29 +82,34 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
                     keyboardView.invalidateAllKeys();
                     break;
 
-                case Keyboard.KEYCODE_DONE:     //encrypt and send
-                    CharSequence currentText = inputConnection.getExtractedText(new ExtractedTextRequest(), 0).text;
-                    if(!TextUtils.isEmpty(inputConnection.getSelectedText(0))) inputConnection.commitText("", 1);
-                    inputConnection.deleteSurroundingText(Integer.MAX_VALUE, Integer.MAX_VALUE);
-                    try {String encryptedText = cryptoController.encrypt(currentText.toString(),password);
-                    inputConnection.commitText(encryptedText, 1);
+                case Keyboard.KEYCODE_DONE:     
                     inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                     inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER));
-                    } catch (Exception e) {}
                     break;
                 
-                case -6:   
-                    ClipboardManager clipboardManager;
-                    clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData pData = clipboardManager.getPrimaryClip();
-                    ClipData.Item item = pData.getItemAt(0);
-                    String encryptedText = item.getText().toString();
+                case -6:                        //decrypt/encrypt
+                    password=prefs.getString("flutter.activeKey", "");
+                    CharSequence currentText = inputConnection.getExtractedText(new ExtractedTextRequest(), 0).text;
+                    String result="";
+                    if(!currentText.toString().isEmpty()) 
+                    {
+                        if(!TextUtils.isEmpty(inputConnection.getSelectedText(0))) inputConnection.commitText("", 1);
+                        inputConnection.deleteSurroundingText(Integer.MAX_VALUE, Integer.MAX_VALUE);
+                        try {result = cryptoController.encrypt(currentText.toString(),password);} catch (Exception e) {}
+                    } 
+                    else
+                    {
+                        ClipboardManager clipboardManager;
+                        clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData pData = clipboardManager.getPrimaryClip();
+                        ClipData.Item item = pData.getItemAt(0);
+                        String encryptedText = item.getText().toString();
+                        try {result = cryptoController.decrypt(encryptedText,password);} catch (Exception e) {}
+                    }
+                    
+                    // inputConnection.commitText(password + ' ',1);
+                    inputConnection.commitText(result, 1);
 
-                    try {
-                    String decryptedString = cryptoController.decrypt(encryptedText,password);
-                    inputConnection.deleteSurroundingText(Integer.MAX_VALUE, Integer.MAX_VALUE);
-                    inputConnection.commitText(decryptedString, 1);
-                    } catch (Exception e) {}
                     break;
 
                 case -7:            //change to number
@@ -117,7 +122,7 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
 
                     break;
                 
-                case -8:            //change to alpha
+                case -8:            //change to symbol
                     keyboard = new Keyboard(this, R.xml.keys_layout3);
                     state=Mode.SYMBOL;
                     keyboard.setShifted(caps);
@@ -135,6 +140,7 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
                     keyboardView.invalidateAllKeys();
 
                     break;
+                    
                 default :
                     char code = (char) primaryCode;
                     if(Character.isLetter(code) && caps){
@@ -173,5 +179,4 @@ public class keyboard extends InputMethodService implements KeyboardView.OnKeybo
 
     }
 
-    
 }

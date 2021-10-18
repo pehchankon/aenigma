@@ -12,17 +12,10 @@ import io.flutter.embedding.engine.FlutterEngine;
 
 public class MainActivity extends FlutterActivity {
 
-    public static Context contextOfApplication;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        contextOfApplication = getApplicationContext();
         GeneratedPluginRegistrant.registerWith(new FlutterEngine(this));
-    }
-
-    public static Context getAppContext(){
-        return contextOfApplication;
     }
 
 }
