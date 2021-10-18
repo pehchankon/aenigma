@@ -7,5 +7,5 @@
     <color name="keyboard_background_color">#1d2228</color>
     <color name="overall_background_color">#191c22</color>
     <color name="keyboard_divider">#FFFFFF</color>
-    <color name="keyboard_pressed">#000000</color>
+    <color name="keyboard_pressed">#2f3640</color>
 </resources>
