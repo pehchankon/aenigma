@@ -102,8 +102,10 @@ class _FileExplorerState extends State<FileExplorer> {
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
+                  color: Colors.blue,
+                  image: DecorationImage(
+                      image: AssetImage('assets/iconmonstr-shield-27-240.png'),
+                      fit: BoxFit.cover)),
               child: Text(
                 'Menu',
                 style: TextStyle(fontSize: 16),
@@ -182,7 +184,7 @@ class _FileExplorerState extends State<FileExplorer> {
                       child: Padding(
                         padding: EdgeInsets.all(10.0),
                         child:
-                            Text('Encrypt', style: TextStyle(fontSize: 30.0)),
+                            Text('Encrypt', style: TextStyle(fontSize: 28.0)),
                       ),
                       style: ButtonStyle(
                           backgroundColor:
@@ -220,7 +222,7 @@ class _FileExplorerState extends State<FileExplorer> {
                       child: Padding(
                         padding: EdgeInsets.all(10.0),
                         child:
-                            Text('Decrypt', style: TextStyle(fontSize: 30.0)),
+                            Text('Decrypt', style: TextStyle(fontSize: 28.0)),
                       ),
                       style: ButtonStyle(
                           backgroundColor:
@@ -237,8 +239,10 @@ class _FileExplorerState extends State<FileExplorer> {
                           crypt.setPassword(myController.text);
                           crypt.setOverwriteMode(AesCryptOwMode.on);
                           // crypt.decryptFileSync(_fileInfo?.path ?? 'null',
-                              // '${d.path}/Decrypted/');
-                          crypt.decryptFileSync('${d.path}/Encrypted/$_fileName','${d.path}/Decrypted/${_fileName.substring(0,_fileName.length-4)}');
+                          // '${d.path}/Decrypted/');
+                          crypt.decryptFileSync(
+                              '${d.path}/Encrypted/$_fileName',
+                              '${d.path}/Decrypted/${_fileName.substring(0, _fileName.length - 4)}');
                           print("file decrypted successfully");
                         }
                       }),
